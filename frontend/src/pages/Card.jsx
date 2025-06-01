@@ -31,18 +31,19 @@ export default function MediaCard() {
         {product.map((product, index) => (
           <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
             <Card sx={{ maxWidth: 345, margin: 2 }}>
+              <Typography component="div" variant="h5" sx={{ padding: 2 }}>
+                {product.title}
+              </Typography>
               <CardMedia
                 sx={{ height: 140 }}
-                image="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                image={product.image}
+                component="img"
                 title="green iguana"
               />
 
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.name}
-                </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {product.name} is a great product.
+                  {product.description}
                 </Typography>
               </CardContent>
             </Card>
