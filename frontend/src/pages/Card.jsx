@@ -5,21 +5,30 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
+import { useEffect, useState } from "react";
+import API from "../../api/axios";
+
 export default function MediaCard() {
-  const products = [
-    { name: "sports car" },
-    { name: "laptop" },
-    { name: "phone" },
-    { name: "sports car" },
-    { name: "laptop" },
-    { name: "phone" },
-    { name: "sports car" }
-  ];
+  const [product, setProduct] = useState([]);
+
+
+  const fetchTasks = async () => {
+    try {
+      const { data } = await API.get("/product");
+      setProduct(data);
+    } catch {
+      alert("Failed to fetch tasks");
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   return (
     <Box sx={{ width: '100%', padding: 2 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {products.map((product, index) => (
+        {product.map((product, index) => (
           <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
             <Card sx={{ maxWidth: 345, margin: 2 }}>
               <CardMedia
