@@ -1,59 +1,71 @@
-import { Box, Button, CardActions, Typography, CardContent, Card } from '@mui/material';
+import { Box, Button, CardActions, TextField, CardContent, Card } from '@mui/material';
+import { useState } from "react";
+import API from "../../api/axios";
+import { Link } from 'react-router-dom';
 
 export default function MediaCard() {
-    // const products = [
-  //   { name: "sports car" },
-  //   { name: "laptop" },
-  //   { name: "phone" },
-  //   { name: "sports car" },
-  //   { name: "laptop" },
-  //   { name: "phone" },
-  //   { name: "sports car" }
-  // ];
+  const [newTitle, setNewTitle] = useState("");
+  const [newImage, setNewImage] = useState("");
+  const [newDescription, setNewDescription] = useState("");
 
-  // function handleClick() {
+  const addTask = async (e) => {
+    e.preventDefault();
+    if (!newTitle.trim()) return;
+    if (!newImage.trim()) return;
+    if (!newDescription.trim()) return;
 
-  //   products.map((product) => {
-  //     product.price = 100;
-  //   });
-  //   console.log(products);
-  // }
+    try {
+      await API.post("/product", { title: newTitle, image: newImage, description: newDescription });
+      setNewImage("");
+      setNewDescription("");
+      setNewTitle("");
+      alert("Product added successfully");
+    } catch {
+      console.log("Failed to add product");
+    }
+  };
 
   return (
-  //   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', padding: 2 }}>
-  //     <Typography variant="h4" component="div" sx={{ marginBottom: 2 }}>
-  //       Add Product
-  //     </Typography>
-  //     <Box sx={{ maxWidth: 345, margin: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  //       {/* <Box sx={{ width: '100%', height: 140, backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-  //         <Typography gutterBottom variant="h5" component="div">
-  //           Add Product
-  //         </Typography>
-  //       </Box> */}
-  //       <Box sx={{ width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  //         <Button variant="contained" color="primary" >
-  //           Add Product
-  //         </Button>
-  //       </Box>
-  //       <Box sx={{ width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  //         <Button size="small">View Products</Button>
-  //         <Button size="small">Checkout</Button>
-  //       </Box>
-  //     </Box>
-  //   </Box>
-  // );
-      <Box sx={{ width: '100%', padding: 2 }}>
+    <Box sx={{ width: '100%', padding: 2 }}>
       <Card sx={{ maxWidth: 345, margin: 2 }}>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Add Product
-          </Typography>
-          <Button variant="contained" color="primary" >
+          <Box display={'flex'} flexDirection={'column'} marginBottom={2}>
+            <TextField
+              id="outlined-basic"
+              label="Product Title"
+              variant="outlined"
+              value={newTitle}
+              margin='dense'
+              onChange={(e) => setNewTitle(e.target.value)}
+              fullWidth
+              required
+            />
+            <TextField
+              id="outlined-basic"
+              label="Product Image URL"
+              variant="outlined"
+              value={newImage}
+              onChange={(e) => setNewImage(e.target.value)}
+              fullWidth
+              required
+            />
+            <TextField
+              id="outlined-basic"
+              label="Product Description"
+              variant="outlined"
+              value={newDescription}
+              margin='dense'
+              onChange={(e) => setNewDescription(e.target.value)}
+              fullWidth
+              required
+            />
+          </Box>
+          <Button onClick={addTask} variant="contained" color="primary">
             Add Product
           </Button>
         </CardContent>
         <CardActions>
-          <Button size="small">View Products</Button>
+          <Button size="small"><Link to='/'>View Products</Link></Button>
           <Button size="small">Checkout</Button>
         </CardActions>
       </Card>
