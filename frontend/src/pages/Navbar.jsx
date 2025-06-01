@@ -13,12 +13,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
-const pages = ['Seller Page', 'Buyer Page'];
 const settings = ['Cart', 'Logout'];
 
 function ResponsiveAppBar({ onLogout }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [role] = React.useState(() => localStorage.getItem("role") || "user");
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +34,8 @@ function ResponsiveAppBar({ onLogout }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const pages = role === 'admin' ? ['Seller Page', 'Buyer Page'] : ['Buyer Page'];
 
   return (
     <Box>
