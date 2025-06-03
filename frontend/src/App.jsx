@@ -4,6 +4,7 @@ import ButtonAppBar from "./pages/Navbar";
 import Products from "./pages/Card";
 import Seller from "./pages/Seller";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Cart from "./pages/Cart";
 
 function App() {
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
@@ -21,6 +22,7 @@ function App() {
       
       <Routes>
         <Route path="/" element={<Products />} />
+        <Route path="/cart" element={<Cart />} />
         
         <Route
           path="/seller"

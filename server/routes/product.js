@@ -16,7 +16,7 @@ router.post('/', protect, admin, async (req, res) => {
     const { title, image, description, price } = req.body;
 
     if (!title || !image || !description || !price) {
-        return res.status(400).json({ message: 'Please provide title, image, and description' });
+        return res.status(400).json({ message: 'Please provide title, image, description and price' });
     }
 
     try {

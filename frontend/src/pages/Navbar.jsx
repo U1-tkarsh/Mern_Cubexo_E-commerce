@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import Cart from './Cart';
 
 const settings = ['Cart', 'Logout'];
 
@@ -131,8 +132,10 @@ function ResponsiveAppBar({ onLogout }) {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={setting === "Logout" ? () => { handleCloseUserMenu(); onLogout(); } : handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                  <MenuItem key={setting} onClick={setting === "Logout" ? () => { handleCloseUserMenu(); onLogout(); } : <Cart />}>
+                    <Link to={setting === 'Cart' ? '/cart' : '/'} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>

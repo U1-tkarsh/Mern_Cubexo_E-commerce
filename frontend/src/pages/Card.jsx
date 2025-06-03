@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -10,7 +10,7 @@ import API from "../../api/axios";
 
 export default function MediaCard() {
   const [product, setProduct] = useState([]);
-
+  const [cart, setCart] = useState([]);
 
   const fetchTasks = async () => {
     try {
@@ -21,6 +21,15 @@ export default function MediaCard() {
     }
   };
 
+  const addCart = async (productId) => {
+    try {
+      const { data } = await API.post("/cart/add", { productId, quantity: 1 });
+      setCart((prevCart) => [...prevCart, data]);
+    } catch {
+      alert("Failed to add product to cart");
+    }
+  }
+
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -29,7 +38,7 @@ export default function MediaCard() {
     <Box sx={{ width: '100%', padding: 2 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {product.map((product, index) => (
-          <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
+          <Grid item xs={2} sm={4} md={4} key={index}>
             <Card sx={{ maxWidth: 345, margin: 2 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingX: 1 }}>
                 <Typography component="div" variant="h5" sx={{ paddingX: 2, paddingY: 1 }}>
@@ -55,7 +64,14 @@ export default function MediaCard() {
                 component="img"
                 alt={product.title}
               />
-
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="body2" sx={{ p: 1, color: 'text.secondary' }}>
+                  Price: ₹{product.price}
+                </Typography>
+                <Button onClick={() => addCart(product._id)} variant='outlined' color="primary" sx={{ m: 1 }}>
+                  Add to Cart
+                </Button>
+              </Box>
               <Typography variant="body2" sx={{ p: 1, color: 'text.secondary' }}>
                 {product.description}
               </Typography>

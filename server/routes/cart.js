@@ -36,12 +36,9 @@ router.post('/add', protect, async (req, res) => {
                 totalPrice: 0
             });
         }
-        // Check if product already exists in cart
-        console.log(`Cart before adding product: ${JSON.stringify(cart)}`);
 
         const existingProductIndex = cart.products.findIndex(p => p.product.toString() === productId);
-        console.log(`Existing product index: ${existingProductIndex}`);
-        
+
         if (existingProductIndex > -1) {
             cart.products[existingProductIndex].quantity += quantity;
         } else {

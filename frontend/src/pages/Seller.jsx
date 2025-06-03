@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 export default function MediaCard() {
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [price, setPrice] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
   const addTask = async (e) => {
@@ -15,10 +16,11 @@ export default function MediaCard() {
     if (!newDescription.trim()) return;
 
     try {
-      await API.post("/product", { title: newTitle, image: newImage, description: newDescription });
+      await API.post("/product", { title: newTitle, image: newImage, description: newDescription, price: price });
       setNewImage("");
       setNewDescription("");
       setNewTitle("");
+      setPrice("");
       alert("Product added successfully");
     } catch {
       console.log("Failed to add product");
@@ -57,6 +59,16 @@ export default function MediaCard() {
                 value={newDescription}
                 margin='dense'
                 onChange={(e) => setNewDescription(e.target.value)}
+                fullWidth
+                required
+              />
+              <TextField
+                id="outlined-basic"
+                label="Product Price"
+                variant="outlined"
+                value={price}
+                margin='dense'
+                onChange={(e) => setPrice(e.target.value)}
                 fullWidth
                 required
               />
