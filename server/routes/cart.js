@@ -45,7 +45,6 @@ router.post('/add', protect, async (req, res) => {
             cart.products.push({ product: productId, quantity });
         }
 
-        // Update total price
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
@@ -82,10 +81,8 @@ router.delete('/remove/:productId', protect, async (req, res) => {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        // Update total price
         cart.totalPrice -= product.price * cart.products[existingProductIndex].quantity;
         
-        // Remove product from cart
         cart.products.splice(existingProductIndex, 1);
 
         await cart.save();
@@ -135,10 +132,8 @@ router.put('/update/:productId', protect, async (req, res) => {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        // Update total price
         cart.totalPrice += (quantity - cart.products[existingProductIndex].quantity) * product.price;
         
-        // Update quantity
         cart.products[existingProductIndex].quantity = quantity;
 
         await cart.save();

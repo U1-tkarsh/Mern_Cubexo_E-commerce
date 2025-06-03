@@ -10,7 +10,6 @@ import API from "../../api/axios";
 
 export default function MediaCard() {
   const [product, setProduct] = useState([]);
-  const [cart, setCart] = useState([]);
 
   const fetchTasks = async () => {
     try {
@@ -23,8 +22,7 @@ export default function MediaCard() {
 
   const addCart = async (productId) => {
     try {
-      const { data } = await API.post("/cart/add", { productId, quantity: 1 });
-      setCart((prevCart) => [...prevCart, data]);
+      await API.post("/cart/add", { productId, quantity: 1 });
     } catch {
       alert("Failed to add product to cart");
     }
