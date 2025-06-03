@@ -1,9 +1,9 @@
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
@@ -31,21 +31,34 @@ export default function MediaCard() {
         {product.map((product, index) => (
           <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
             <Card sx={{ maxWidth: 345, margin: 2 }}>
-              <Typography component="div" variant="h5" sx={{ padding: 2 }}>
-                {product.title}
-              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingX: 1 }}>
+                <Typography component="div" variant="h5" sx={{ paddingX: 2, paddingY: 1 }}>
+                  {product.title}
+                </Typography>
+                {localStorage.getItem("role") == 'admin' ? <Box>
+                  <DeleteIcon
+                    sx={{ cursor: 'pointer', color: 'red' }}
+                    onClick={async () => {
+                      try {
+                        await API.delete(`/product/${product._id}`);
+                        setProduct((prevProducts) => prevProducts.filter((p) => p._id !== product._id));
+                      } catch {
+                        alert("Failed to delete product");
+                      }
+                    }}
+                  />
+                </Box> : null}
+              </Box>
               <CardMedia
-                sx={{ height: 140 }}
+                sx={{ p: 0, height: 140, objectFit: 'fill' }}
                 image={product.image}
                 component="img"
-                title="green iguana"
+                alt={product.title}
               />
 
-              <CardContent>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {product.description}
-                </Typography>
-              </CardContent>
+              <Typography variant="body2" sx={{ p: 1, color: 'text.secondary' }}>
+                {product.description}
+              </Typography>
             </Card>
           </Grid>
         ))}
