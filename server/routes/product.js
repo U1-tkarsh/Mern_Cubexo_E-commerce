@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { protect, admin } = require('../middleware/auth');
 const Product = require('../models/product');
+const cloudinary = require('../config/cloundinary');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 router.get('/', protect, async (req, res) => {
     try {
@@ -10,6 +14,19 @@ router.get('/', protect, async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
+});
+
+router.post('/upload', protect, admin, upload.single('image'), async (req, res) => {
+    cloudinary.uploader.upload_stream(
+        { folder: 'products' },
+        (error, result) => {
+            if (result) {
+                res.status(200).json({ imageUrl: result.secure_url });
+            } else {
+                res.status(500).json({ error: error.message });
+            }
+        }
+    ).end(req.file.buffer);
 });
 
 router.post('/', protect, admin, async (req, res) => {
@@ -55,7 +72,7 @@ router.put('/:id', protect, async (req, res) => {
     }
 });
 
-router.delete('/:id', protect, admin , async (req, res) => {
+router.delete('/:id', protect, admin, async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) {
