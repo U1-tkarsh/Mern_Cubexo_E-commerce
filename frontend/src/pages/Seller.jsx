@@ -1,4 +1,4 @@
-import { Box, Button, CardActions, TextField, Paper } from '@mui/material';
+import { Box, Button, TextField, Paper } from '@mui/material';
 import { useState } from "react";
 import API from "../../api/axios";
 import { Link } from 'react-router-dom';
@@ -73,14 +73,25 @@ export default function MediaCard() {
                 required
               />
             </Box>
-            <Button onClick={addTask} variant="contained" color="primary">
-              Add Product
-            </Button>
+            <Box className="button-container" sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+              <Button size="small" variant="outlined" color="secondary" onClick={() => {
+                setNewTitle("");
+                setNewImage("");
+                setNewDescription("");
+                setPrice("");
+              }}>
+                Clear
+              </Button>
+              <Button onClick={addTask} variant="contained" color="primary">
+                Add Product
+              </Button>
+              <Button size="small">
+                <Link to='/'>
+                  View Products
+                </Link>
+              </Button>
+            </Box>
           </Box>
-          <CardActions>
-            <Button size="small"><Link to='/'>View Products</Link></Button>
-            <Button size="small">Checkout</Button>
-          </CardActions>
         </Box>
       </Box>
     </Paper>
