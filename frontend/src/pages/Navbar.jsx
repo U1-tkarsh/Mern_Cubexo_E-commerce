@@ -105,7 +105,9 @@ function ResponsiveAppBar({ onLogout }) {
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  {page}
+                  <Typography sx={{ textAlign: 'center' }}>
+                    <Link to={page === 'Seller Page' ? '/seller' : '/'}>{page}</Link>
+                  </Typography>
                 </Button>
               ))}
             </Box>
